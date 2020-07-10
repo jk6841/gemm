@@ -11,12 +11,24 @@ module InnerProductUnit
     input wire clk,
     input wire rst,
 
-    input wire [2*VECTOR_LEN-1:0][INPUT_DATA_WIDTH-1:0] data_in,
+    input wire [VECTOR_LEN-1:0][INPUT_DATA_WIDTH-1:0] vec0_in,
+    input wire [VECTOR_LEN-1:0][INPUT_DATA_WIDTH-1:0] vec1_in,
+    
     output logic [OUTPUT_DATA_WIDTH-1:0] data_out
 
 );
 
     logic [VECTOR_LEN-1:0][DATA_WIDTH-1:0] wires;
+    
+    logic [2*VECTOR_LEN-1:0][DATA_WIDTH-1:0] pairs;
+
+    always_comb begin
+        for (int i=0; i<VECTOR_LEN; i++) begin
+            pairs[2*i] = vec0_in[i];
+            pairs[2*i+1] = vec1_in[i];
+        end
+    end
+   
 
 
     MultiplierArray
@@ -27,8 +39,8 @@ module InnerProductUnit
     )
     multiplierArray
     (
-        .data_in (data_in),
-        .data_out (wires[VECTOR_LEN-1:0])
+        .data_in (pairs),
+        .data_out (wires)
     );
 
     AdderTree
@@ -40,7 +52,7 @@ module InnerProductUnit
     (
         .clk (clk),
         .rst (rst),
-        .data_in (wires[VECTOR_LEN-1:0]),
+        .data_in (wires),
         .data_out (data_out)
     );    
 
