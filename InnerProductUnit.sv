@@ -20,17 +20,6 @@ module InnerProductUnit
 
     logic [VECTOR_LEN-1:0][DATA_WIDTH-1:0] wires;
     
-    logic [2*VECTOR_LEN-1:0][DATA_WIDTH-1:0] pairs;
-
-    always_comb begin
-        for (int i=0; i<VECTOR_LEN; i++) begin
-            pairs[2*i] = vec0_in[i];
-            pairs[2*i+1] = vec1_in[i];
-        end
-    end
-   
-
-
     MultiplierArray
     #(
         .INPUT_DATA_WIDTH (INPUT_DATA_WIDTH),
@@ -39,7 +28,7 @@ module InnerProductUnit
     )
     multiplierArray
     (
-        .data_in (pairs),
+        .data_in ({vec1_in, vec0_in}),
         .data_out (wires)
     );
 

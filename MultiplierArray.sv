@@ -21,8 +21,8 @@ module MultiplierArray
             )
             multiplier
             (
-                .data0_in (data_in[2*i]),
-                .data1_in (data_in[2*i+1]),
+                .data0_in (data_in[i]),
+                .data1_in (data_in[i+NUM]),
                 .data_out (data_out[i])
             );
         end

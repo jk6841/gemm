@@ -3,7 +3,7 @@
 module AdderTree
 #(
     parameter DATA_WIDTH = 32,
-    parameter LAYER = 3
+    parameter LAYER = 2
 )
 (
     input clk,
