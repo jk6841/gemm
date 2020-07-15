@@ -8,6 +8,7 @@ module AdderTree
 (
     input clk,
     input rst,
+    input enable,
     input wire [(1<<LAYER)-1:0][DATA_WIDTH-1:0] data_in,
     output logic [DATA_WIDTH-1:0] data_out
 );
@@ -16,20 +17,19 @@ module AdderTree
 
     logic [WIRE_NUM-1:0][DATA_WIDTH-1:0] wires;
 
-    genvar j;
     generate
-        for (j=0; j < LAYER; j=j+1) begin
+        for (genvar j=0; j < LAYER; j=j+1) begin
             if (j==0) begin
                 FlipFlopArray
                 #(
                     .DATA_WIDTH (DATA_WIDTH),
-                    .NUM (1 << (LAYER-j))
+                    .NUM (1 << (LAYER))
                 )
                 flipFlopArray_Inst
                 (
                     .clk (clk),
                     .rst (rst),
-                    .enable (1'b1),
+                    .enable (enable),
                     .data_in (data_in),
                     .data_out (wires[3*(1<<(LAYER-j))-5 : (1<<(LAYER+1-j))-4])
                 );
@@ -44,7 +44,7 @@ module AdderTree
                 (
                     .clk (clk),
                     .rst (rst),
-                    .enable (1'b1),
+                    .enable (enable),
                     .data_in (wires[(1<<(LAYER+2-j))-5 : 3*(1<<(LAYER-j))-4]),
                     .data_out (wires[3*(1<<(LAYER-j))-5 : (1<<(LAYER+1-j))-4])
                 );
